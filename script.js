@@ -6,7 +6,8 @@ const deleteButtons = document.querySelectorAll(".delete");
 const taskCounterDisplay = document.querySelector(".taskscore");
 
 
-let delclicked=true;
+let editButton=true;
+let deleteButton =true;
 let taskCompletedCount = 0;
 let totalTaskCount = 0;
 
@@ -23,14 +24,15 @@ addTaskButton.addEventListener("click", () => {
 });
 
 taskTable.addEventListener("click", (event) => {
-  if (event.target.classList.contains("delete")) {
-    taskCompletedCount++;
-    delclicked=false;
+  if (event.target.classList.contains("delete") && !deleteButton==false) {
     const taskRow = event.target.closest("tr");
     const completionIndicator = taskRow.querySelector("td:nth-child(1)");
     completionIndicator.innerHTML = `<i class="fa-regular fa-circle-check"></i>`;
+    taskCompletedCount++;
     taskCounterDisplay.innerHTML = `<h3>Tasks: ${taskCompletedCount}/${totalTaskCount}</h3>`;
-  } else if (event.target.classList.contains("edit") && !delclicked==false) {
+    editButton=false;
+    deleteButton=false;
+  } else if (event.target.classList.contains("edit") && !editButton==false) {
       const taskRow = event.target.closest("tr");
       const taskCell = taskRow.querySelector("td:nth-child(2)");
       const currentTask = taskCell.textContent;
@@ -51,4 +53,6 @@ function addTaskRow() {
     <td><button class="delete">Done</button></td>
   `;
   taskTable.appendChild(taskRow);
+  deleteButton=true;
+  editButton=true;
 }
